@@ -1,3 +1,102 @@
-.showcase-img{
-	cursor: pointer;
-}
+@charset "UTF-8";
+.showcase-img {
+  cursor: pointer; }
+
+.showcase-gallery {
+  display: block;
+  display: none;
+  margin-top: 0;
+  height: 100%;
+  min-height: 500px;
+  width: 100%;
+  z-index: 19900;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: -webkit-linear-gradient(rgba(255, 255, 255, 0.9), white);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(rgba(255, 255, 255, 0.9), white);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(rgba(255, 255, 255, 0.9), white);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(rgba(255, 255, 255, 0.9), white);
+  /* Standard syntax */ }
+  .showcase-gallery .gallery-close-wrapper {
+    width: 100%;
+    min-width: 400px;
+    height: 50px;
+    clear: both; }
+    .showcase-gallery .gallery-close-wrapper .gallery-close {
+      position: absolute;
+      right: 25px;
+      top: 25px;
+      background: rgba(180, 180, 180, 0.8);
+      border: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 30px; }
+      .showcase-gallery .gallery-close-wrapper .gallery-close a {
+        color: white;
+        font-size: 18px;
+        font-family: Helvetica;
+        width: 18px;
+        height: 18px;
+        margin: auto; }
+      .showcase-gallery .gallery-close-wrapper .gallery-close a:before {
+        content: '✕'; }
+  .showcase-gallery imgwrapper, .showcase-gallery navwrapper {
+    display: block; }
+  .showcase-gallery imgwrapper {
+    width: 80%;
+    height: 100%;
+    float: left;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    z-index: 19910; }
+    .showcase-gallery imgwrapper imgcontainer {
+      min-width: 256px;
+      width: 80%;
+      height: 80%;
+      margin: auto;
+      display: block;
+      overflow: hidden; }
+      .showcase-gallery imgwrapper imgcontainer ul {
+        list-style: none;
+        width: 100%; }
+        .showcase-gallery imgwrapper imgcontainer ul li {
+          display: block;
+          display: none;
+          width: 100%;
+          height: 100%;
+          line-height: 100%; }
+          .showcase-gallery imgwrapper imgcontainer ul li img {
+            width: 100%; }
+  .showcase-gallery nav {
+    display: block;
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    width: 100px;
+    height: 40px; }
+    .showcase-gallery nav .showcase-previous, .showcase-gallery nav .showcase-next {
+      width: 40px;
+      height: 40px;
+      border: 1px #ccc solid;
+      cursor: pointer; }
+    .showcase-gallery nav .showcase-previous:hover, .showcase-gallery nav .showcase-next:hover {
+      box-shadow: 0 0 2px 2px #ccc; }
+    .showcase-gallery nav .showcase-previous {
+      float: left; }
+    .showcase-gallery nav .showcase-next {
+      float: right; }
+    .showcase-gallery nav .showcase-previous i, .showcase-gallery nav .showcase-next i {
+      width: 1px;
+      margin: 8px 7px;
+      display: block;
+      font-size: 20px; }
+    .showcase-gallery nav .showcase-previous i:before {
+      content: "\2190 "; }
+    .showcase-gallery nav .showcase-next i:before {
+      content: "\2192 "; }
+
+/*# sourceMappingURL=style.css.map */
