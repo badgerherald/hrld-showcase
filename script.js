@@ -33,12 +33,29 @@ jQuery(document).ready(function(){
 		jQuery('div.showcase-gallery').fadeIn(800);
 
 		// nav
-		jQuery('.showcase-previous').click(function(event) {
-			if(clicked_id == 1)
+		var nav_counter = 1;
+		jQuery('.showcase-previous').click(function() {
+			console.log('prev: '+ nav_counter);
+			if( nav_counter == 1){
+				jQuery('.gallery-close-wrapper').click();
+			}
+			else{
+				nav_counter--;
+				jQuery('imgcontainer li').fadeOut(300);
+				jQuery('li.showcase-gallery-img-' + nav_counter).fadeIn(300);
+			}
+			console.log(' ' + nav_counter);
+		});
+		jQuery('.showcase-next').click(function(event) {
+			console.log('next: '+nav_counter);
+			if( nav_counter == imgs_length)
 				jQuery('.gallery-close-wrapper').click();
 			else{
-				
+				nav_counter++;
+				jQuery('imgcontainer li').fadeOut(300);
+				jQuery('li.showcase-gallery-img-' + nav_counter).fadeIn(300);
 			}
+			console.log(' ' + nav_counter);
 		});
 
 		// close
