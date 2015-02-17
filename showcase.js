@@ -31,6 +31,7 @@
 		// show gallery and first one in series
 		jQuery('div.showcase-gallery li.showcase-gallery-img-'+clicked_id, container).show();
 		jQuery('div.showcase-gallery').fadeIn(800);
+		jQuery('span.gallery-pageNo', container).html(clicked_id + ' of ' + imgs_length);
 
 		// make sure all the photos are loaded in
 		jQuery('div.showcase-gallery li', container).load();
@@ -45,6 +46,7 @@
 				nav_counter--;
 				jQuery('imgcontainer li.showcase-gallery-img-'+(nav_counter+1), container).fadeOut(300, function(){
 					jQuery('li.showcase-gallery-img-' + nav_counter, container).fadeIn(300);
+					jQuery('span.gallery-pageNo', container).html((nav_counter) + ' of ' + imgs_length);
 				});
 				
 			}
@@ -56,6 +58,7 @@
 				nav_counter++;
 				jQuery('imgcontainer li.showcase-gallery-img-'+(nav_counter-1), container).fadeOut(300, function(){
 					jQuery('li.showcase-gallery-img-' + nav_counter, container).fadeIn(300);
+					jQuery('span.gallery-pageNo', container).html((nav_counter) + ' of ' + imgs_length);
 				});
 				
 			}
@@ -68,7 +71,7 @@
 			jQuery('html body').css('overflow', 'scroll');
 			return;
 		});
-		jQuery('.showcase-gallery imgwrapper imgcontainer img', container).click(function(e){
+		jQuery('.showcase-gallery imgwrapper imgcontainer li div', container).click(function(e){
 			e.stopPropagation();
 		})
 		return;
@@ -130,13 +133,16 @@ function showcase_build_gallery( container){
 	return;
 }
 function showcase_add_imgs( clicked_id){
+	
 	var img_wrapper = '';
 	img_wrapper += "<imgwrapper>";
-	img_wrapper += "<imgContainer>";
+	img_wrapper += "<imgContainer style='max-height: '"+ (jQuery(window).height())*0.8 +";' >";
 	img_wrapper += img_wrapper_urls(clicked_id);
 	img_wrapper += "</imgContainer>";
 	img_wrapper += "</imgwrapper>";
 	img_wrapper += "<nav>"
+	img_wrapper += "<span class='gallery-pageNo'>";
+	img_wrapper += "</span>";
 	img_wrapper += "<div class='showcase-previous'><i></i></div>";
 	img_wrapper += "<div class='showcase-next'><i></i></div>";
 	jQuery('.showcase-gallery').append(img_wrapper);
@@ -145,12 +151,14 @@ function showcase_add_imgs( clicked_id){
 }
 function img_wrapper_urls( clicked_id){
 	if( imgs_length == 1)
-		return '<ul><li class=\'showcase-gallery-img-' + '1' + '\'><img src='+ links+' /></li></ul>';
+		return "<ul><li class='showcase-gallery-img-1' style='max-height: "+ (jQuery(window).height())*0.8 + ";'><div class='imgdisplay' style='background-image: url('" + links + "')';' /></div></li></ul>";
 	else{
 		var imgUrls = '<ul>', counter = 0;
 		for (var i = 0; i < links.length; i++) {
 			counter++;
-			imgUrls += '<li class=\'showcase-gallery-img-' + (i+1) + '\'><img src='+ links[i]+' /></li>';
+			imgUrls += "<li class='showcase-gallery-img-" + (i+1)
+			imgUrls += "' style='max-height: " + (jQuery(window).height())*0.8 + ";' >"
+			imgUrls += "<div class='imgdisplay' style='background-image: url(\"" + links[i] + "\")'; /></div></li>";
 		};
 		imgUrls += '</ul>';
 		return imgUrls;
