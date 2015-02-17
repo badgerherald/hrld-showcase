@@ -16,7 +16,9 @@ function hrld_showcase_enqueue(){
 
 function hrld_showcase_enqueue_single(){
 	if( is_single() ){
+		wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/showcase.js', array( 'jquery' ));
 		wp_register_script( 'hrld-showcase-script', '/wp-content/plugins/hrld-showcase/script.js', array( 'jquery' ));
+		wp_enqueue_script( 'hrld-showcase-script-class');
 		wp_enqueue_script( 'hrld-showcase-script');
 
 		/* // not sure how this would work if done this way...
