@@ -152,14 +152,14 @@ function showcase_add_imgs( clicked_id){
 }
 function img_wrapper_urls( clicked_id){
 	if( imgs_length == 1)
-		return "<ul><li class='showcase-gallery-img-1' style='max-height: "+ (jQuery(window).height())*0.8 + "; max-width: "+ (jQuery(window).width())*0.8 +";' ><div class='imgdisplay' style='background-image: url(" + links + ");' /></div></li></ul>";
+		return "<ul><li class='showcase-gallery-img-1' style='max-height: "+ (jQuery(window).height())*0.8 + "; max-width: "+ (jQuery(window).width())*0.8 +";' ><img class='imgdisplay' src='" + links + "' /></li></ul>";
 	else{
 		var imgUrls = '<ul>', counter = 0;
 		for (var i = 0; i < links.length; i++) {
 			counter++;
 			imgUrls += "<li class='showcase-gallery-img-" + (i+1)
 			imgUrls += "' style='max-height: "+ (jQuery(window).height())*0.8 + "; max-width: "+ (jQuery(window).width())*0.8 +";' >";
-			imgUrls += "<div class='imgdisplay' style='background-image: url(" + links[i] + ");' /></div></li>";
+			imgUrls += "<img class='imgdisplay' src='" + links[i] + "' /></li>";
 		};
 		imgUrls += '</ul>';
 		return imgUrls;
