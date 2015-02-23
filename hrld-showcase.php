@@ -56,8 +56,3 @@ function hrld_showcase_enqueue_author(){
 } add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue_single' );
 
 */
-?>
-
-
-
-
