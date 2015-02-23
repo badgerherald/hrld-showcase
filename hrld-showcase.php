@@ -11,15 +11,17 @@ License: 		Copyright (c) 2014 The Badger Herald
 
 
 function hrld_showcase_enqueue(){
-	wp_enqueue_style( 'hrld-showcase-style', '/wp-content/plugins/hrld-showcase/style.css' );
-} add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue' );
+	wp_register_style( 'hrld-showcase-style', '/wp-content/plugins/hrld-showcase/style.css' );	
+	wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/showcase.js', array( 'jquery' ));
+	wp_register_script( 'hrld-showcase-init', '/wp-content/plugins/hrld-showcase/showcase-init.js', array( 'jquery', 'hrld-showcase-script-class' ));
+}
+add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue' );
 
 function hrld_showcase_enqueue_single(){
 	if( is_single() ){
-		wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/showcase.js', array( 'jquery' ));
-		wp_register_script( 'hrld-showcase-script', '/wp-content/plugins/hrld-showcase/script.js', array( 'jquery' ));
+		wp_enqueue_style('hrld-showcase-style');
 		wp_enqueue_script( 'hrld-showcase-script-class');
-		wp_enqueue_script( 'hrld-showcase-script');
+		wp_enqueue_script( 'hrld-showcase-init');
 
 		/* // not sure how this would work if done this way...
 		global $post;
@@ -38,8 +40,10 @@ function hrld_showcase_enqueue_single(){
 		
 
 	}
-} add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue_single' );
+} 
+add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue_single' );
 
+/*
 function hrld_showcase_enqueue_author(){
 
 	if( is_author()){
@@ -51,7 +55,7 @@ function hrld_showcase_enqueue_author(){
 	wp_localize_script( 'hrld-showcase-script', 'photo-links', '');
 } add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue_single' );
 
-
+*/
 ?>
 
 

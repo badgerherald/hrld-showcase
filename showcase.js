@@ -106,7 +106,7 @@ function showcase_flush(){
 	return;
 }
 function showcase_original_url( img_url){
-	var ext = img_url.match(/(jpg|tiff|gif){1}/);
+	var ext = img_url.match(/(jpg|tiff|gif|jpeg|png){1}/);
 	return img_url.replace(/(\-{1}\d+x\d+(\-*\d*\.*\w*){1})/, '.'+ext[0]);
 }
 function showcase_find_clicked_id(img){
