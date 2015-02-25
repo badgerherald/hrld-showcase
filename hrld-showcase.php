@@ -12,7 +12,8 @@ License: 		Copyright (c) 2014 The Badger Herald
 
 function hrld_showcase_enqueue(){
 	wp_register_style( 'hrld-showcase-style', '/wp-content/plugins/hrld-showcase/style.css' );	
-	wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/showcase.js', array( 'jquery' ));
+  	wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/showcase.js', array( 'jquery' ));
+	//wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/script-2.js', array( 'jquery' ));
 	wp_register_script( 'hrld-showcase-init', '/wp-content/plugins/hrld-showcase/showcase-init.js', array( 'jquery', 'hrld-showcase-script-class' ));
 }
 add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue' );
