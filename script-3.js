@@ -95,16 +95,15 @@
         var buildShowcase = function() {
             var html = '';
             html += '<div class="showcase-wrapper">';
+            html += '<div class="showcase-slide-wrapper"></div>';            
             html += '<div class="showcase-close"></div>';
-            html += '<div class="showcase-slide-wrapper">';
             html += '<div class="showcase-nav">';
             html += '<div class="showcase-previous"></div>';
             html += '<div class="showcase-next"></div>';
             html += '</div>';
             html += '</div>';
-            html += '</div>';
 
-            $(settings.container).append(html);
+            $('body').append(html);
         }
 
         var buildSlides = function () {
