@@ -12,9 +12,13 @@ License: 		Copyright (c) 2014 The Badger Herald
 
 function hrld_showcase_enqueue(){
 	wp_register_style( 'hrld-showcase-style', '/wp-content/plugins/hrld-showcase/style.css' );	
-  	wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/showcase.js', array( 'jquery' ));
+  	//wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/showcase.js', array( 'jquery' ));
 	//wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/script-2.js', array( 'jquery' ));
+	wp_register_script( 'hrld-showcase-script-class', '/wp-content/plugins/hrld-showcase/script-3.js', array( 'jquery' ));
 	wp_register_script( 'hrld-showcase-init', '/wp-content/plugins/hrld-showcase/showcase-init.js', array( 'jquery', 'hrld-showcase-script-class' ));
+	wp_localize_script('hrld-showcase-script-class', 'hrld_showcase', array(
+		'ajaxurl' => admin_url('admin-ajax.php'),
+	));
 }
 add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue' );
 
@@ -23,7 +27,6 @@ function hrld_showcase_enqueue_single(){
 		wp_enqueue_style('hrld-showcase-style');
 		wp_enqueue_script( 'hrld-showcase-script-class');
 		wp_enqueue_script( 'hrld-showcase-init');
-
 		/* // not sure how this would work if done this way...
 		global $post;
 		$image_urls = array();
@@ -55,8 +58,52 @@ function hrld_showcase_enqueue_author(){
 
 	wp_localize_script( 'hrld-showcase-script', 'photo-links', '');
 } add_action( 'wp_enqueue_scripts', 'hrld_showcase_enqueue_single' );
-
 */
+
+function hrld_showcase_add_class_to_thumbnail($thumb, $post_id, $post_thumbnail_id) {
+	if( is_single() ) 
+		$thumb = str_replace('attachment-', 'wp-image-'.$post_thumbnail_id.' attachment-', $thumb);
+	return $thumb;
+}
+add_filter('post_thumbnail_html','hrld_showcase_add_class_to_thumbnail', 20, 3);
+
+function hrld_showcase_image_data_ajax() {
+	$images = $_POST['images'];
+	$args = array(
+        'post_type' => 'attachment',
+        'post_status' => 'inherit',
+        'posts_per_page' => -1,
+        'post__in' => $images,
+        'orderby' => 'post__in'
+    );
+
+    $attachments = get_posts($args);
+    $response = array();
+    if ($attachments) {
+    	foreach ($attachments as $attachment) {
+    		$response[] = array(
+    			'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
+				'caption' => $attachment->post_excerpt,
+				'description' => $attachment->post_content,
+				'href' => get_permalink( $attachment->ID ),
+				'src' => $attachment->guid,
+				'title' => $attachment->post_title,
+    			'ID' => $attachment->ID
+    		);
+    	}
+    }
+
+    $response = apply_filters('hrld_showcase_image_data', $response);
+
+    $response = json_encode($response);
+
+    header("Content-Type: application/json");
+    echo $response;
+    wp_die();
+}
+add_action('wp_ajax_hrld_showcase_image_data_ajax', 'hrld_showcase_image_data_ajax');
+add_action('wp_ajax_nopriv_hrld_showcase_image_data_ajax', 'hrld_showcase_image_data_ajax');
+
 
 /**
  * Filters post gallery generated 
