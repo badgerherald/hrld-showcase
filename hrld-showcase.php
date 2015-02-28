@@ -81,6 +81,7 @@ function hrld_showcase_image_data_ajax() {
     $response = array();
     if ($attachments) {
     	foreach ($attachments as $attachment) {
+    		$meta_data = wp_get_attachment_metadata($attachment->ID);
     		$response[] = array(
     			'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
 				'caption' => $attachment->post_excerpt,
@@ -88,7 +89,9 @@ function hrld_showcase_image_data_ajax() {
 				'href' => get_permalink( $attachment->ID ),
 				'src' => $attachment->guid,
 				'title' => $attachment->post_title,
-    			'ID' => $attachment->ID
+    			'ID' => $attachment->ID,
+    			'width' => $meta_data['width'],
+    			'height' => $meta_data['height']
     		);
     	}
     }

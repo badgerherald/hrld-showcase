@@ -1,9 +1,31 @@
 (function($) {
 
     $.fn.showcase = function(options) {
-
-        var settings = $.extend({}, $.fn.showcase.defaults, options);
-        var curr_index = 0;
+        var slideHtml = function(img) {
+                var html = '';
+                var hasCaption = '';
+                if (img.caption === "") {
+                    hasCaption = ' no-caption';
+                }
+                html += '<div class="showcase-slide' + hasCaption + '">';
+                html += '<div class="showcase-img" style="width:' + img.width + 'px; height:' + img.height + 'px;">';
+                html += '<img src="' + img.src + '" alt="' + img.alt + '" title="' + img.title + '" />';
+                html += '</div>';
+                if (hasCaption === '') {
+                    html += '<div class="showcase-content">';
+                    html += '<div class="showcase-caption">' + img.caption + '</div>';
+                    html += '</div>';                    
+                }
+                html += '</div>';
+                return html;
+            }
+        var settings = $.extend({
+            slideHtml: slideHtml
+        }, $.fn.showcase.defaults, options);
+        if (typeof(settings.slideHtml) !== 'function') {
+            settings.slideHtml = slideHtml;
+        }
+        var curr_index = -1;
         var grabImageData = function(callback) {
             parseIds();
             var postData = {
@@ -32,7 +54,7 @@
             buildShowcase();
             buildSlides();
 
-            $(settings.container + ' ' + settings.selector).on('click', function(event) {
+            $(settings.container).on('click', '.showcase-thumb', function(event) {
                 event.preventDefault();
                 curr_index = $(this).attr('data-showcase-index');
                 openShowcase(curr_index);
@@ -44,6 +66,7 @@
                     curr_index = settings.images.length - 1;
                 }
                 gotoSlide(curr_index);
+                event.stopPropagation();
             });
             $('.showcase-next').on('click', function(event) {
                 event.preventDefault();
@@ -52,17 +75,35 @@
                     curr_index = 0;
                 }
                 gotoSlide(curr_index);
+                event.stopPropagation();
             });
             $('.showcase-close').on('click', function(event) {
                 event.preventDefault();
                 closeShowcase();
-            })
+                event.stopPropagation();
+            });
+            $('.showcase-overlay').on('click', function(event) {
+                closeShowcase();
+            });
+            $(window).on('resize', function(event) {
+                adjustDim();
+            });
+        }
+
+        var adjustDim = function() {
+            if ($('.showcase-slide').length !== 0) {
+                var img = settings.images[curr_index];
+                var slideHeight = $(window).height() - 100;
+                var ratio =  img.height / img.width;
+                var imageHeight = $('.showcase-img').width() * ratio;
+                if (imageHeight < slideHeight) {
+                    slideHeight = imageHeight;
+                }
+                $('.showcase-slide').height(slideHeight);
+            }
         }
 
         var openShowcase = function(index) {
-            if ($('.showcase-slide').length === 0) {
-                addSlides();
-            }
             $('.showcase-wrapper').addClass("active");
             $('html body').css({'overflow': 'hidden'});
             gotoSlide(index);
@@ -70,14 +111,14 @@
 
         var closeShowcase = function() {
             $('.showcase-wrapper').removeClass("active");
+            $('.showcase-slide').remove();
             $('html body').css({'overflow': 'auto'});
         }
 
         var gotoSlide = function(index) {
-            $('.showcase-slide').each(function() {
-                $(this).removeClass("active");
-            });
-            $('.showcase-slide[data-showcase-index="' + index + '"').addClass("active");
+            $('.showcase-slide').remove();
+            addSlide(index);
+            adjustDim();
         }
 
         var attachDataAttr = function() {
@@ -86,21 +127,19 @@
             });            
         }
 
-        var addSlides = function() {
-            for (var i = 0; i < settings.images.length; i++) {
-                $('.showcase-slide-wrapper').append(settings.images[i].html);
-            }
+        var addSlide = function(index) {
+            $('.showcase-wrapper').append(settings.images[index].html);
         }
 
         var buildShowcase = function() {
             var html = '';
-            html += '<div class="showcase-wrapper">';
-            html += '<div class="showcase-slide-wrapper"></div>';            
+            html += '<div class="showcase-wrapper">';         
             html += '<div class="showcase-close"></div>';
             html += '<div class="showcase-nav">';
             html += '<div class="showcase-previous"></div>';
-            html += '<div class="showcase-next"></div>';
+            html += '<div class="showcase-next"></div>';  
             html += '</div>';
+            html += '<div class="showcase-overlay"></div>'; 
             html += '</div>';
 
             $('body').append(html);
@@ -110,20 +149,7 @@
             if (settings.images) {
                 for (var i = 0; i < settings.images.length; i++) {
                     var img = settings.images[i];
-                    var html = '';
-                    html += '<div class="showcase-slide" data-showcase-index="'+i+'">';
-                    html += '<div class="showcase-img">';
-                    html += '<img src="' + img.src + '" alt="' + img.alt + '" title="' + img.title + '" />';
-                    html += '</div>';
-                    html += '<div class="showcase-content">';
-                    if (img.title !== "") {
-                        html += '<h1>' + img.title + '</h1>';
-                    }
-                    if (img.caption !== "") {
-                        html += '<div class="showcase-caption">' + img.caption + '</div>';
-                    }
-                    html += '</div>';
-                    html += '</div>';
+                    var html = settings.slideHtml(img);
                     settings.images[i].html = html;
                 }
             }
