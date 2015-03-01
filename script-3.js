@@ -81,6 +81,7 @@
                     else{
                         curr_index = 0;
                         gotoSlide(curr_index);
+                    }
                 }
                 event.stopPropagation();
             });
