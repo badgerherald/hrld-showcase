@@ -88,6 +88,37 @@
             $(window).on('resize', function(event) {
                 adjustDim();
             });
+            $(document).on('keyup', function(event) {
+                if ($('.showcase-slide').length === 0) {
+                    return;
+                }
+                // ESC key
+                if (event.which === 27) {
+                    event.preventDefault();
+                    closeShowcase();
+                    event.stopPropagation();
+                }
+                // LEFT ARROW key
+                else if (event.which === 37) {
+                    event.preventDefault();
+                    curr_index--;
+                    if (curr_index < 0) {
+                        curr_index = settings.images.length - 1;
+                    }
+                    gotoSlide(curr_index);
+                    event.stopPropagation();
+                }
+                // RIGHT ARROW key
+                else if (event.which === 39) {
+                    event.preventDefault();
+                    curr_index++;
+                    if (curr_index == settings.images.length) {
+                        curr_index = 0;
+                    }
+                    gotoSlide(curr_index);
+                    event.stopPropagation();
+                }
+            });
         }
 
         var adjustDim = function() {
