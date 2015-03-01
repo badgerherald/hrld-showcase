@@ -96,6 +96,21 @@
                 margin: 0 auto;
             }
         }
+        .showcase-overlay-previous, .showcase-overlay-next{
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            cursor: pointer;
+        }
+        .showcase-overlay-previous{
+            float: left;
+            left: 0;
+        }
+        .showcase-overlay-next{
+            float: right;
+            right: 0;
+        }
         .showcase-content {
             padding: 10px;
             color: #2c2c2c;

@@ -10,6 +10,8 @@
                 html += '<div class="showcase-slide' + hasCaption + '">';
                 html += '<div class="showcase-img" style="width:' + img.width + 'px; height:' + img.height + 'px;">';
                 html += '<img src="' + img.src + '" alt="' + img.alt + '" title="' + img.title + '" />';
+                html += '<div class="showcase-previous showcase-overlay-previous"></div>';
+                html += '<div class="showcase-next showcase-overlay-next"></div>';
                 html += '</div>';
                 if (hasCaption === '') {
                     html += '<div class="showcase-content">';
@@ -59,29 +61,35 @@
                 curr_index = $(this).attr('data-showcase-index');
                 openShowcase(curr_index);
             });
+            $(document).on('click', '.showcase-overlay-previous', function(event) {
+                event.preventDefault();
+                $('.showcase-previous').trigger('click');
+            });
+            $(document).on('click', '.showcase-overlay-next', function(event) {
+                event.preventDefault();
+                $('.showcase-next').trigger('click');
+            });
             $('.showcase-previous').on('click', function(event) {
                 event.preventDefault();
-                curr_index--;
-                if (curr_index < 0) {
-                    if(settings.images.length == 1)
-                        closeShowcase();
-                    else{
+                if(settings.images.length == 1)
+                    closeShowcase();
+                else{
+                    curr_index--;
+                    if (curr_index < 0) 
                         curr_index = settings.images.length - 1;
-                        gotoSlide(curr_index);
-                    }
+                    gotoSlide(curr_index);
                 }
                 event.stopPropagation();
             });
             $('.showcase-next').on('click', function(event) {
                 event.preventDefault();
-                curr_index++;
-                if (curr_index == settings.images.length) {
-                    if(settings.images.length == 1)
-                        closeShowcase();
-                    else{
+                if(settings.images.length == 1)
+                    closeShowcase();
+                else{
+                    curr_index++;
+                    if (curr_index == settings.images.length)
                         curr_index = 0;
-                        gotoSlide(curr_index);
-                    }
+                    gotoSlide(curr_index);
                 }
                 event.stopPropagation();
             });
