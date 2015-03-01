@@ -61,14 +61,6 @@
                 curr_index = $(this).attr('data-showcase-index');
                 openShowcase(curr_index);
             });
-            $(document).on('click', '.showcase-overlay-previous', function(event) {
-                event.preventDefault();
-                $('.showcase-previous').trigger('click');
-            });
-            $(document).on('click', '.showcase-overlay-next', function(event) {
-                event.preventDefault();
-                $('.showcase-next').trigger('click');
-            });
             $('.showcase-previous').on('click', function(event) {
                 event.preventDefault();
                 if(settings.images.length == 1)
@@ -92,6 +84,16 @@
                     gotoSlide(curr_index);
                 }
                 event.stopPropagation();
+            });
+
+            //  over image nav
+            $(document).on('click', '.showcase-overlay-previous', function(event) {
+                event.preventDefault();
+                $('.showcase-previous').trigger('click');
+            });
+            $(document).on('click', '.showcase-overlay-next', function(event) {
+                event.preventDefault();
+                $('.showcase-next').trigger('click');
             });
             $('.showcase-close').on('click', function(event) {
                 event.preventDefault();
@@ -117,21 +119,13 @@
                 // LEFT ARROW key
                 else if (event.which === 37) {
                     event.preventDefault();
-                    curr_index--;
-                    if (curr_index < 0) {
-                        curr_index = settings.images.length - 1;
-                    }
-                    gotoSlide(curr_index);
+                    $('.showcase-previous').trigger('click');
                     event.stopPropagation();
                 }
                 // RIGHT ARROW key
                 else if (event.which === 39) {
                     event.preventDefault();
-                    curr_index++;
-                    if (curr_index == settings.images.length) {
-                        curr_index = 0;
-                    }
-                    gotoSlide(curr_index);
+                    $('.showcase-right').trigger('click');
                     event.stopPropagation();
                 }
             });
