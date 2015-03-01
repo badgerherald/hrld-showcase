@@ -125,7 +125,7 @@
                 // RIGHT ARROW key
                 else if (event.which === 39) {
                     event.preventDefault();
-                    $('.showcase-right').trigger('click');
+                    $('.showcase-next').trigger('click');
                     event.stopPropagation();
                 }
             });
