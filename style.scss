@@ -177,18 +177,25 @@
     width: 100%;
     display: block;
     position: relative;
-    .open-gallery {
+    img {
+        width: 100%;
+    }
+    a.open-gallery {
         position: absolute;
         background: #000;
         display: inline-block;
-        bottom: 12px;
-        left: 20px;
+        bottom: 20px;
+        right: 20px;
         font-size: 16px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-family: "PT Sans Narrow", Helvetica, Arial, Sans-Serif;
+        padding: 10px;
         color: #fff;
-        opacity: .75;
+        opacity: .9;
         &:hover {
             text-decoration: underline;
-            opacity: 1;
+            color: #fff;
         }
     }
 }

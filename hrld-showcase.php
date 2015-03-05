@@ -100,14 +100,15 @@ function showcase_post_gallery($output = '', $attr) {
         'size'       => 'thumbnail',
         'include'    => '',
         'exclude'    => '',
-        'link'       => ''
+        'link'       => '',
+        'ids'        => ''
     ), $attr, 'gallery' );
  
     $id = intval( $atts['id'] );
     if ( 'RAND' == $atts['order'] ) {
         $atts['orderby'] = 'none';
     }
- 
+    /*
     if ( ! empty( $atts['include'] ) ) {
         $_attachments = get_posts( array( 'include' => $atts['include'], 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $atts['order'], 'orderby' => $atts['orderby'] ) );
  
@@ -120,19 +121,13 @@ function showcase_post_gallery($output = '', $attr) {
     } else {
         $attachments = get_children( array( 'post_parent' => $id, 'post_status' => 'inherit', 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => $atts['order'], 'orderby' => $atts['orderby'] ) );
     }
+    */
+   $_attachments = explode(",", $atts['ids']);
  
-    if ( empty( $attachments ) ) {
+    if ( empty( $_attachments ) ) {
         return '';
     }
- 
-    if ( is_feed() ) {
-        $output = "\n";
-        foreach ( $attachments as $att_id => $attachment ) {
-            $output .= wp_get_attachment_link( $att_id, $atts['size'], true ) . "\n";
-        }
-        return $output;
-    }
- 
+    /*
     $itemtag = tag_escape( $atts['itemtag'] );
     $captiontag = tag_escape( $atts['captiontag'] );
     $icontag = tag_escape( $atts['icontag'] );
@@ -154,6 +149,7 @@ function showcase_post_gallery($output = '', $attr) {
     $selector = "gallery-{$instance}";
  
     $gallery_style = '';
+    */
  
     /**
      * Filter whether to print default gallery styles.
@@ -187,11 +183,11 @@ function showcase_post_gallery($output = '', $attr) {
         </style>\n\t\t";
     }
     */
- 
+    /*
     $size_class = sanitize_html_class( $atts['size'] );
     // $gallery_div = "<div id='$selector' class='gallery galleryid-{$id} gallery-columns-{$columns} gallery-size-{$size_class}'>";
     $gallery_div = "<div id='slider'><div id='swipe' class='swipe'><div class='swipe-wrap'>";
- 
+    */
     /**
      * Filter the default gallery shortcode CSS styles.
      *
@@ -200,8 +196,25 @@ function showcase_post_gallery($output = '', $attr) {
      * @param string $gallery_style Default gallery shortcode CSS styles.
      * @param string $gallery_div   Opening HTML div container for the gallery shortcode output.
      */
-    $output = apply_filters( 'gallery_style', $gallery_style . $gallery_div );
- 
+    //$output = apply_filters( 'gallery_style', $gallery_style . $gallery_div );
+    $gallery_cover = intval($_attachments[0]);
+    $output = '<div class="gallery-block">';
+    $output .= wp_get_attachment_image($gallery_cover, 'image-post-size', false, array(
+        'class'=>'showcase-thumb',
+        'data-showcase-index' => '0'
+    ));
+    $output .= '<a href="#" class="open-gallery showcase-thumb" data-showcase-index="0">View Gallery ('.count($_attachments).' Photos)</a>';
+    $output .= '</div>';
+    $output .= '<script>';
+    $output .= 'jQuery.fn.showcase.defaults.container = ".gallery-block";';
+    $output .= 'jQuery.fn.showcase.defaults.images = new Array('.$_attachments[0];
+    for ($i = 1; $i < count($_attachments); $i++)
+    {
+        $output .= ', '.$_attachments[$i];
+    }
+    $output .= ');';
+    $output .= '</script>';
+    /*
     $i = 0;
     foreach ( $attachments as $id => $attachment ) {
         if ( ! empty( $atts['link'] ) && 'file' === $atts['link'] ) {
@@ -267,7 +280,8 @@ function showcase_post_gallery($output = '', $attr) {
     $output .= '<div class="slider-nav-page prev"></div><div class="slider-nav-page next"></div>';
     $output .= '</div>';
     $output .= "</div>"; //id="slider"
- 
+    */
     return $output;
+
 }
-//add_filter('post_gallery', 'exa_post_gallery', 10, 2);
+add_filter('post_gallery', 'showcase_post_gallery', 10, 2);

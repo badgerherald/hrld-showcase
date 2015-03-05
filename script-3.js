@@ -29,7 +29,11 @@
         }
         var curr_index = -1;
         var grabImageData = function(callback) {
-            parseIds();
+            if (!settings.images)
+            {
+                parseIds();
+            }
+            // Expects settings.images to be an array of image IDs.
             var postData = {
                 action: 'hrld_showcase_image_data_ajax',
                 images: settings.images
@@ -210,11 +214,7 @@
         }
 
         return this.each(function() {
-            if (!settings.images) {
                 grabImageData(init);
-            } else {
-                init();
-            }
         });
     }
 
