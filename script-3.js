@@ -13,12 +13,12 @@
                 html += '<div class="showcase-previous showcase-overlay-previous"></div>';
                 html += '<div class="showcase-next showcase-overlay-next"></div>';
                 html += '</div>';
+                html += '</div>';
                 if (hasCaption === '') {
                     html += '<div class="showcase-content">';
                     html += '<div class="showcase-caption">' + img.caption + '</div>';
                     html += '</div>';                    
                 }
-                html += '</div>';
                 return html;
             }
         var settings = $.extend({
@@ -137,14 +137,83 @@
 
         var adjustDim = function() {
             if ($('.showcase-slide').length !== 0) {
+                var winHeight = $(window).height();
+                var winWidth = $(window).width();
+                var slide = $('.showcase-slide');
                 var img = settings.images[curr_index];
-                var slideHeight = $(window).height() - 100;
                 var ratio =  img.height / img.width;
                 var imageHeight = $('.showcase-img').width() * ratio;
-                if (imageHeight < slideHeight) {
-                    slideHeight = imageHeight;
+
+                if (slide.hasClass('no-caption'))
+                {
+                    var slideHeight = winHeight - 140;
+                    if (imageHeight < slideHeight) {
+                        slideHeight = imageHeight;
+                    }
+                    slide.height(slideHeight);
+                    var leftOff = (winWidth/2) - (slide.width()/2);
+                    var topOff = (winHeight/2) - (slide.height()/2);
+                    slide.css({
+                        left: leftOff,
+                        top: topOff
+                    });
                 }
-                $('.showcase-slide').height(slideHeight);
+                else
+                {
+                    var slideContent = $('.showcase-content');
+                    //Has a caption
+                    if (winWidth < 1020)
+                    {
+                        // Mobile + tablet breakpoint
+                        var slideHeight = winHeight - 140 - slideContent.height();
+                        if (imageHeight < slideHeight) {
+                            slideHeight = imageHeight;
+                        }
+                        slide.height(slideHeight);
+                        var leftOff = (winWidth/2) - (slide.width()/2);
+                        var topOff = ((winHeight - 70 - slideContent.height())/2) - (slide.height()/2);
+                        slide.css({
+                            left: leftOff,
+                            top: topOff
+                        });
+                        leftOff = (winWidth/2) - (slideContent.width()/2);
+                        topOff = 'auto';
+                        var bottomOff = 82;
+                        var rightOff = 'auto';
+                        slideContent.css({
+                            left: leftOff,
+                            top: topOff,
+                            bottom: bottomOff,
+                            right: rightOff
+                        });
+                    }
+                    else
+                    {
+                        // Desktop breakpoint
+                        var slideHeight = winHeight - 140;
+                        if (imageHeight < slideHeight) {
+                            slideHeight = imageHeight;
+                        }
+                        slide.height(slideHeight);
+                        var leftOff = ((winWidth - 40 - slideContent.width())/2) - (slide.width()/2);
+                        var topOff = (winHeight/2) - (slide.height()/2);
+                        slide.css({
+                            left: leftOff,
+                            top: topOff
+                        });
+                        leftOff = 'auto';
+                        topOff = (winHeight/2) - (slideContent.height()/2);
+                        var bottomOff = 'auto';
+                        var rightOff = 40;
+                        slideContent.css({
+                            left: leftOff,
+                            top: topOff,
+                            bottom: bottomOff,
+                            right: rightOff
+                        });
+                    }
+
+                }
             }
         }
 
@@ -157,11 +226,13 @@
         var closeShowcase = function() {
             $('.showcase-wrapper').removeClass("active");
             $('.showcase-slide').remove();
+            $('.showcase-content').remove();
             $('html body').css({'overflow': 'auto'});
         }
 
         var gotoSlide = function(index) {
             $('.showcase-slide').remove();
+            $('.showcase-content').remove();
             addSlide(index);
             adjustDim();
         }
@@ -181,8 +252,8 @@
             html += '<div class="showcase-wrapper">';         
             html += '<div class="showcase-close"></div>';
             html += '<div class="showcase-nav">';
-            html += '<div class="showcase-previous"></div>';
-            html += '<div class="showcase-next"></div>';  
+            html += '<div class="showcase-previous icon icon-arrow-left"></div>';
+            html += '<div class="showcase-next icon icon-arrow-right"></div>';  
             html += '</div>';
             html += '<div class="showcase-overlay"></div>'; 
             html += '</div>';
