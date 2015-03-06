@@ -245,6 +245,7 @@
 
         var addSlide = function(index) {
             $('.showcase-wrapper').append(settings.images[index].html);
+            $('.showcase-nav .showcase-photo-index span').text(parseInt(curr_index) + 1);
         }
 
         var buildShowcase = function() {
@@ -252,6 +253,7 @@
             html += '<div class="showcase-wrapper">';         
             html += '<div class="showcase-close"></div>';
             html += '<div class="showcase-nav">';
+            html += '<div class="showcase-photo-index">Photo <span></span> of ' + settings.images.length + '</div>';
             html += '<div class="showcase-previous icon icon-arrow-left"></div>';
             html += '<div class="showcase-next icon icon-arrow-right"></div>';  
             html += '</div>';
