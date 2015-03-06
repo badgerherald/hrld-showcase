@@ -223,6 +223,9 @@
             max-width: percentage(700/780);
         }
     }
+    .gallery-block {
+        width: calc(100% - 380px);
+    }
 }
 @media(min-width: 940px) {
     .showcase-wrapper {
@@ -289,5 +292,10 @@
             right: 25px;
             width: 100px;
         }
+    }
+}
+@media (min-width: 1160px) {
+    .gallery-block {
+        width: 100%;
     }
 }
