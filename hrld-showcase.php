@@ -51,8 +51,8 @@ function hrld_showcase_image_data_ajax() {
 				'src' => $attachment->guid,
 				'title' => $attachment->post_title,
     			'ID' => $attachment->ID,
-    			'width' => $meta_data['width'],
-    			'height' => $meta_data['height']
+                'width' => isset($meta_data['width']) ? $meta_data['width'] : 0,
+                'height' => isset($meta_data['height']) ? $meta_data['height'] : 0
     		);
     	}
     }
