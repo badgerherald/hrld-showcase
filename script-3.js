@@ -33,6 +33,10 @@
             {
                 parseIds();
             }
+            if (settings.images.length === 0)
+            {
+                return;
+            }
             // Expects settings.images to be an array of image IDs.
             var postData = {
                 action: 'hrld_showcase_image_data_ajax',
